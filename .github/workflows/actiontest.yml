@@ -30,8 +30,12 @@ jobs:
           # Install Ansible
           sudo apt-get update 
           sudo apt-get install -y ansible 
+          sudo apt-get install -y python
+
+      - name : Debug Connection
+        run : ansible -m setup localhost
    
       - name: Run Ansible Playbook
         run: |
-          ansible-playbook -i localhost, -vvv windows.yml
+          ansible-playbook -i localhost, windows.yml
 
