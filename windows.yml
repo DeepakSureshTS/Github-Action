@@ -1,7 +1,7 @@
 ---
 - name: Update Windows OS
   hosts: all
-  gather_facts: false
+  gather_facts: true
   become: yes
   tasks:
     - name: Ensure Windows updates are installed
