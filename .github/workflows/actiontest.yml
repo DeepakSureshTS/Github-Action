@@ -28,7 +28,7 @@ jobs:
       - name: Set up Packer and Ansible
         run: |   
           # Install Ansible
-          choco install ansible -y
+          choco install ansible -y --pre
    
       - name: Run Ansible Playbook
         run: |
