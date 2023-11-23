@@ -1,6 +1,6 @@
 ---
 - name: Update Windows OS
-  hosts: all
+  hosts: localhost
   gather_facts: true
   become: yes
   tasks:
