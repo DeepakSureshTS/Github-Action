@@ -37,3 +37,53 @@
           ansible.builtin.shell:
             cmd: /cbFiles/unpacked/install.sh
           when: cb_installed.stat.exists == false  
+
+
+---
+- name: Install and Configure Carbon Black
+  hosts: all
+  become: true
+  gather_facts: true
+ 
+  tasks:
+    - name: Check if Carbon Black is installed
+      ansible.builtin.stat:
+        path: /opt/carbonblack/psc
+      register: cb_installed
+
+    - name: Create dir for CB
+      ansible.builtin.file:
+        path: /cbFiles
+        state: directory
+        mode: '0777'   
+      
+    - name: Create dir for unpack
+      ansible.builtin.file:
+        path: /cbFiles/unpacked
+        state: directory
+        mode: '0777' 
+
+    - name: Download Carbon Black installer from S3
+      ansible.builtin.s3:
+        bucket: your-s3-bucket
+        object: path/to/cb-psc-sensor-ubuntu-2.14.1.1646819.tar
+        dest: /cbFiles/cb-psc-sensor-ubuntu-2.14.1.1646819.tar
+      when: cb_installed.stat.exists == false
+
+    - name: Transfer compressed installer from local to remote
+      ansible.builtin.copy:
+        src: cb-psc-sensor-ubuntu-2.14.1.1646819.tar
+        dest: /cbFiles/cb-psc-sensor-ubuntu-2.14.1.1646819.tar
+      when: cb_installed.stat.exists == false
+
+    - name: Unpack CB installer
+      ansible.builtin.unarchive:
+        src: /cbFiles/cb-psc-sensor-ubuntu-2.14.1.1646819.tar
+        dest: /cbFiles/unpacked
+        remote_src: yes
+      when: cb_installed.stat.exists == false
+
+    - name: Install CB
+      ansible.builtin.shell:
+        cmd: /cbFiles/unpacked/install.sh your-company-code
+      when: cb_installed.stat.exists == false
