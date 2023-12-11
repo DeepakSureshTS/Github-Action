@@ -1,4 +1,4 @@
----
+  ---
 - name: Update Windows OS
   hosts: all
   gather_facts: false
