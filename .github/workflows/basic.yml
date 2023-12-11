@@ -23,7 +23,7 @@ jobs:
  
     - name: Run Ansible Playbooks
       run: ansible-playbook firstaction.yml
-      continue-on-error: true
+      continue-on-error: false
  
   file-check-ci:
     runs-on: ubuntu-latest
