@@ -1,29 +1,9 @@
-name: CI Pipeline
+---
+- name: Display Hostname
+  hosts: all
+  become: true
  
-on:
-  push:
-    branches:
-      - main
- 
-jobs:
-  ci:
-    runs-on: ubuntu-latest
- 
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
- 
-    - name: Set up Packer and Ansible
-      run: |
-        # Install Packer
-         wget https://releases.hashicorp.com/packer/1.7.6/packer_1.7.6_linux_amd64.zip
-         unzip packer_1.7.6_linux_amd64.zip
-         sudo mv packer /usr/local/bin/
- 
-        # Install Ansible
-        sudo apt-get update
-        sudo apt-get install -y ansible
- 
-    - name: Run Ansible Playbook
-      run: |
-        ansible-playbook -i localhost, windows.yml
+  tasks:
+    - name: Print Hostname
+      debug:
+        msg: "Hostname is {{ ansible_hostname }}"
